@@ -1,31 +1,41 @@
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, SafeAreaView, FlatList } from 'react-native';
 import { ListItem } from './components/ListItem'; 
-import articles from "./dummies/articles"
+import axios from 'axios';
+import Constants from 'expo-constants';
+
+const URL = "https://newsapi.org/v2/top-headlines?country=jp&category=business&apiKey=${Constants.manifest.extra.newsApiKey}"
 
 export default function App() {
-  const Items = articles.map((articles,index) => {
-    return (
-      <ListItem
-      imageUrl={articles.UrlToImage}
-      title={articles.title}
-      author={articles.author}
-      key={index.toString()}
-    />    
-    )
-  });
+  const [articles, setArticles] = useState ([])
+
+  const fetchArticles = async() => {
+    try {
+      const response = await axios.get(URL);
+      console.log(response.data.articles);
+      setArticles(response.data.articles);
+    }catch(error){
+      console.log(error);
+    }
+    
+  };
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        date={articles}
+        data={articles}
         renderItem={({item}) => {
-          return (
+          return(
             <ListItem
-            imageUrl={item.UrlToImage}
-            title={item.title}
-            author={item.author}
-          />    
+              imageUrl={item.urlToImage}
+              title={item.title}
+              author={item.author}
+            />
           )
         }}
         keyExtractor={(item, index) => index.toString()}
