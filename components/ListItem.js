@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, Text } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 
 // 
 // @param { 
@@ -11,7 +11,7 @@ import { StyleSheet, Image, View, Text } from 'react-native';
 
 export const ListItem = (props) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={props.onPress}>
       <View style={styles.itemContainer}>
         <View style={styles.leftContainer}>
           <Image
@@ -26,7 +26,7 @@ export const ListItem = (props) => {
           <Text style={styles.subtext}>{props.author}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
